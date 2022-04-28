@@ -13,9 +13,21 @@
             { 'M', 1000 },
         };
 
+        private static Dictionary<int, int> NumberOrders = new Dictionary<int, int>()
+        {
+            { 1, 1 },
+            { 5, 2 },
+            { 10, 2 },
+            { 50, 3 },
+            { 100, 4 },
+            { 500, 5 },
+            { 1000, 6 },
+        };
+
         public static bool TryDecodeRomanNumber(string romanNum, out int sum)
         {
             sum = 0;
+            int sameOccurrence = 1;
             bool alreadyMinus = false;
             for (int i = romanNum.Length - 1; i >= 0; i--)
             {
@@ -32,6 +44,25 @@
                         sum = 0;
                         return false;
                     }
+                    else
+                    {
+                        if (prev == val)
+                        {
+                            if (sameOccurrence >= 3)
+                            {
+                                sum = 0;
+                                return false;
+                            }
+                            else
+                            {
+                                sameOccurrence++;
+                            }
+                        }
+                        else
+                        {
+                            sameOccurrence = 1;
+                        }
+                    }
                 }
                 else
                 {
@@ -40,7 +71,7 @@
                 sum += val;
                 if (prev < val)
                 {
-                    if (alreadyMinus)
+                    if (prev != 0 && (alreadyMinus || (NumberOrders[val] - NumberOrders[prev] != 1)))
                     {
                         sum = 0;
                         return false;
