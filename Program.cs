@@ -1,6 +1,6 @@
 ﻿using CodeWarsExercise;
 
-if (RomanNumeralDecoder.TryDecodeRomanNumber("MCMXCIX", out int num))
+if (RomanNumeralDecoder.TryDecodeRomanNumber("MCMXCIV", out int num))
 {
     Console.WriteLine(num);
 }

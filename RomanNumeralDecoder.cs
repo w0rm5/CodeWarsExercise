@@ -2,7 +2,7 @@
 {
     public class RomanNumeralDecoder
     {
-        private static Dictionary<char, int> RomanNumbers = new Dictionary<char, int>()
+        private static readonly Dictionary<char, int> RomanNumbers = new()
         {
             { 'I', 1 },
             { 'V', 5 },
@@ -13,7 +13,7 @@
             { 'M', 1000 },
         };
 
-        private static Dictionary<int, int> NumberOrders = new Dictionary<int, int>()
+        private static readonly Dictionary<int, int> NumberOrders = new()
         {
             { 1, 1 },
             { 5, 2 },
@@ -27,6 +27,10 @@
         public static bool TryDecodeRomanNumber(string romanNum, out int sum)
         {
             sum = 0;
+            if (string.IsNullOrEmpty(romanNum))
+            {
+                return false;
+            }
             int sameOccurrence = 1;
             bool alreadyMinus = false;
             for (int i = romanNum.Length - 1; i >= 0; i--)
