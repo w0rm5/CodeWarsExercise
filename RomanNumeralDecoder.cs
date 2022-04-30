@@ -2,7 +2,7 @@
 {
     public class RomanNumeralDecoder
     {
-        private static readonly Dictionary<char, int> RomanNumbers = new()
+        private readonly Dictionary<char, int> RomanNumbers = new()
         {
             { 'I', 1 },
             { 'V', 5 },
@@ -13,18 +13,40 @@
             { 'M', 1000 },
         };
 
-        private static readonly Dictionary<int, int> NumberOrders = new()
+        private readonly Dictionary<int, int> NumberOrders = new()
         {
             { 1, 1 },
             { 5, 2 },
             { 10, 2 },
             { 50, 3 },
-            { 100, 4 },
-            { 500, 5 },
-            { 1000, 6 },
+            { 100, 3 },
+            { 500, 4 },
+            { 1000, 4 },
         };
 
-        public static bool TryDecodeRomanNumber(string romanNum, out int sum)
+        private readonly Dictionary<int, bool> Repeatables = new()
+        {
+            { 1, true },
+            { 5, false },
+            { 10, true },
+            { 50, false },
+            { 100, true },
+            { 500, false },
+            { 1000, true },
+        };
+        
+        private readonly Dictionary<int, bool> Subtractables = new()
+        {
+            { 1, true },
+            { 5, false },
+            { 10, true },
+            { 50, false },
+            { 100, true },
+            { 500, false },
+            { 1000, false },
+        };
+
+        public bool TryDecodeRomanNumber(string romanNum, out int sum)
         {
             sum = 0;
             if (string.IsNullOrEmpty(romanNum))
@@ -52,7 +74,7 @@
                     {
                         if (prev == val)
                         {
-                            if (sameOccurrence >= 3)
+                            if (!Repeatables[prev] || sameOccurrence >= 3)
                             {
                                 sum = 0;
                                 return false;
@@ -75,7 +97,7 @@
                 sum += val;
                 if (prev < val)
                 {
-                    if (prev != 0 && (alreadyMinus || (NumberOrders[val] - NumberOrders[prev] != 1)))
+                    if (prev != 0 && (alreadyMinus || !Subtractables[prev] ||  (NumberOrders[val] - NumberOrders[prev] != 1)))
                     {
                         sum = 0;
                         return false;
@@ -83,7 +105,7 @@
                     alreadyMinus = true;
                     sum -= prev * 2;
                 }
-                else if(prev == val && alreadyMinus)
+                else if (prev == val && alreadyMinus)
                 {
                     sum = 0;
                     return false;
