@@ -34,10 +34,12 @@ namespace CodeWarsExercise.Test
             Assert.AreEqual(decodedNumber, testNumber);
         }
 
-        [TestCase("XVXI", 6)]
+        [TestCase("XVXI", 16)]
         [TestCase("IL", 49)]
         [TestCase("CIL", 149)]
         [TestCase("DIL", 549)]
+        [TestCase("IVXMLDC", 1534)]
+        [TestCase("MXMLDC", 2540)]
         [TestCase("MMMM", 4000)]
         public void RomanNumeralDecoderFailed(string romanNumberal, int decodedNumber)
         {
